@@ -1,55 +1,131 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Lipa na M-Pesa</title>
-    <link rel="stylesheet" href="{% static 'donor/payment.css' %}">
-</head>
-<body>
 
-<div class="payment-container">
-    <div class="mpesa-logo">M-PESA PAYMENT</div>
+{% block content %}
 
-    <h2>Donate With M-Pesa</h2>
-    <p class="description">Enter your phone number and donation amount.  
-        You will receive an M-Pesa prompt on your phone.</p>
-
-    <form method="POST" onsubmit="showPopup()">
-        {% csrf_token %}
+<div class="row justify-content-center align-items-center py-5">
+    <div class="col-md-6 col-lg-5">
         
-        <div class="input-group">
-            <label>Phone Number (Safaricom)</label>
-            <input type="text" name="phone" placeholder="e.g. 07XXXXXXXX" required>
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            
+            <div class="mpesa-header p-4 text-center">
+                <h3 class="fw-bold text-white mb-0">
+                    <i class="fa-solid fa-sim-card me-2"></i>Lipa na M-Pesa
+                </h3>
+                <p class="text-white-50 mb-0 small">Secure Instant Payment</p>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                
+                <div class="text-center mb-4">
+                    <div class="mb-3">
+                        <span class="icon-circle bg-light-green text-success">
+                            <i class="fa-solid fa-mobile-screen-button fa-2x"></i>
+                        </span>
+                    </div>
+                    <h5 class="fw-bold text-dark">Check your phone</h5>
+                    <p class="text-muted small">
+                        After clicking "Pay Now", you will receive a popup on your phone to enter your M-Pesa PIN.
+                    </p>
+                </div>
+
+                <form method="POST" id="paymentForm">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Phone Number</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-white border-end-0 text-muted">
+                                <i class="fa-solid fa-phone"></i>
+                            </span>
+                            <input type="tel" name="phone" class="form-control border-start-0 ps-0" 
+                                   placeholder="0712 345 678" required pattern="[0-9]{10,12}">
+                        </div>
+                        <div class="form-text x-small">Enter Safaricom number.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-secondary">Donation Amount</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-white border-end-0 text-muted">KES</span>
+                            <input type="number" name="amount" class="form-control border-start-0 ps-0 fw-bold text-dark" 
+                                   placeholder="500" min="1" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-mpesa w-100 py-3 rounded-pill fw-bold shadow-sm">
+                        Pay Now
+                    </button>
+                    
+                    <div class="text-center mt-3">
+                         <small class="text-muted"><i class="fa-solid fa-lock me-1"></i> Secured by Daraja API</small>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <div class="input-group">
-            <label>Amount (KES)</label>
-            <input type="number" name="amount" placeholder="e.g. 500" min="1" required>
-        </div>
-
-        <button type="submit" class="pay-btn">Pay Now</button>
-    </form>
-</div>
-
-<!-- POPUP MESSAGE -->
-<div id="popup" class="popup">
-    <div class="popup-box">
-        <h3>✔ Prompt Sent!</h3>
-        <p>Please check your phone and enter M-Pesa PIN.</p>
     </div>
 </div>
 
-<script>
-function showPopup() {
-    document.getElementById("popup").style.display = "flex";
+<div class="modal fade" id="promptModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-body text-center p-5">
+                <div class="spinner-border text-success mb-4" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h4 class="fw-bold mb-3">Connection Established!</h4>
+                <p class="text-muted mb-4">We've sent a prompt to your phone. Please unlock your screen and enter your M-Pesa PIN to complete the donation.</p>
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    // OPTIONAL: auto hide after 3 seconds
-    setTimeout(() => {
-        document.getElementById("popup").style.display = "none";
-    }, 3000);
-}
+<style>
+    /* Official Safaricom Green */
+    .mpesa-header {
+        background: linear-gradient(135deg, #43B02A 0%, #2e8b1d 100%);
+    }
+    .btn-mpesa {
+        background-color: #43B02A;
+        color: white;
+        transition: all 0.3s ease;
+    }
+    .btn-mpesa:hover {
+        background-color: #33901e;
+        color: white;
+        transform: translateY(-2px);
+    }
+    .bg-light-green {
+        background-color: rgba(67, 176, 42, 0.1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+    }
+    .input-group-text {
+        background-color: #f8f9fa !important; /* Slightly grey for contrast */
+    }
+    .form-control:focus {
+        border-color: #43B02A;
+        box-shadow: 0 0 0 0.25rem rgba(67, 176, 42, 0.25);
+    }
+</style>
+
+<script>
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        // We let the form submit naturally to the server, 
+        // but we show the modal immediately for UX.
+        
+        var myModal = new bootstrap.Modal(document.getElementById('promptModal'));
+        myModal.show();
+        
+        // Note: In a real app, you might use AJAX here so the page doesn't reload immediately.
+        // If the page reloads instantly, the modal might disappear too fast.
+        // If using standard Django form submission, the page reload is fine as the user needs to look at their phone anyway.
+    });
 </script>
 
-</body>
-</html>
+{% endblock %}

@@ -1,50 +1,224 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Donor Dashboard</title>
-    <link rel="stylesheet" href="{% static 'donor/css/style.css' %}">
-</head>
-<body>
-    <header>
-        <h1>Welcome to HopeBridge donor dashboard</h1>
-        <p>Your impact matters. Thank you for your generosity!</p>
-        <nav>
-            <a href="{% url 'donor_home' %}">Home</a>
-            <a href="{% url 'logout_donor' %}">Logout</a>
-        </nav>
-    </header>
 
-    <main>
-        <section class="cards-container">
-            <div class="card">
-                <a href="/donor/donate/" class="btn-success">Donate via M-Pesa</a>
-                <form method="POST" action="{% url 'donate' %}">
-                     {% csrf_token %}
-                    <input type="text" name="phone" placeholder="Phone number" required>
-                    <input type="number" name="amount" placeholder="Amount" required>
-                    <button type="submit">Donate</button>
-              </form>
-                <h2>Total Donations</h2>
-                <p>Ksh.20,000</p>
-                <button>Donate Now</button>
-            </div>
-            <div class="card">
-                <h2>Pending Donations</h2>
-                <p>3</p>
-                <button>View Pending</button>
-            </div>
-            <div class="card">
-                <h2>Needy Assisted</h2>
-                <p>15</p>
-                <button>View Needy</button>
-            </div>
-        </section>
-    </main>
+{% block content %}
+<div class="container py-4">
 
-    <footer>
-        <p>&copy; 2025 HopeBridge. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold text-dark">Dashboard</h2>
+            <p class="text-muted">Welcome back! Here is an overview of your impact.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="{% url 'donor_app:home' %}" class="btn btn-outline-primary btn-sm rounded-pill">
+                <i class="fa-solid fa-magnifying-glass me-1"></i> Browse New Cases
+            </a>
+        </div>
+    </div>
+    <div class="row g-4 mb-5">
+        
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4 position-relative">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="bg-light-success text-success rounded-circle p-3">
+                            <i class="fa-solid fa-hand-holding-dollar fa-xl"></i>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success">+12% this month</span>
+                    </div>
+                    <h6 class="text-muted text-uppercase small fw-bold">Total Donated</h6>
+                    <h3 class="fw-bold mb-0">KES 20,000</h3> </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="bg-light-primary text-primary rounded-circle p-3">
+                            <i class="fa-solid fa-users fa-xl"></i>
+                        </div>
+                    </div>
+                    <h6 class="text-muted text-uppercase small fw-bold">Lives Impacted</h6>
+                    <h3 class="fw-bold mb-0">15 People</h3> </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="bg-light-warning text-warning rounded-circle p-3">
+                            <i class="fa-solid fa-clock fa-xl"></i>
+                        </div>
+                        <span class="badge bg-warning bg-opacity-10 text-warning">Action Required</span>
+                    </div>
+                    <h6 class="text-muted text-uppercase small fw-bold">Pending Processing</h6>
+                    <h3 class="fw-bold mb-0">3 Cases</h3> </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-header bg-success text-white py-3">
+                    <h5 class="mb-0 fw-bold"><i class="fa-brands fa-mpesa me-2"></i>Quick M-Pesa Donation</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{% url 'donor_app:lipa_na_mpesa' %}" class="row g-3">
+                        {% csrf_token %}
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fa-solid fa-phone"></i></span>
+                                <input type="text" name="phone" class="form-control" placeholder="e.g., 0712345678" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Amount (KES)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">KES</span>
+                                <input type="number" name="amount" class="form-control" placeholder="Amount" required>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-success w-100 py-2 fw-bold">
+                                Initiate Payment
+                            </button>
+                            <p class="text-center text-muted x-small mt-2 mb-0" style="font-size: 0.8rem;">
+                                <i class="fa-solid fa-lock me-1"></i> Secure payment processed via M-Pesa Daraja API
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<div class="secondary-dashboard-section">
+    
+    <div class="personal-summary-card">
+        <h3>My Impact Summary</h3>
+        <p>Total personal contributions:</p>
+        <div class="personal-amount">KES 18,500</div>
+        <a href="/my-history" class="history-link">View Full Donation History →</a>
+    </div>
+
+    <div class="recent-donations-log-card">
+        <h3>Recent HopeBridge Contributions</h3>
+        <ul class="donation-list">
+            <li><span>John M.</span> contributed <span>KES 1,500</span> (1 min ago)</li>
+            <li><span>Anonymous</span> contributed <span>KES 3,000</span> (1 hour ago)</li>
+            <li><span>Sarah K.</span> contributed <span>KES 500</span> (Today)</li>
+        </ul>
+    </div>
+    
+    <div class="fundraising-goal-card">
+        <h3>Current Campaign: Project Feed 1000</h3>
+        <p>Goal: KES 500,000 | Raised: KES 350,000</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: 70%;"></div>
+        </div>
+        <p class="progress-percentage">70% Reached</p>
+    </div>
+
+</div>
+</div>
+
+<style>
+    /* PASTE NEW CSS FOR THE NEW FEATURES HERE */
+
+/* 1. Layout Container */
+.secondary-dashboard-section {
+    display: grid; /* Use grid for flexible layout */
+    grid-template-columns: 1fr 1fr 1fr; /* Three equal columns */
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* 2. General Card Styles */
+.personal-summary-card,
+.recent-donations-log-card,
+.fundraising-goal-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.personal-summary-card h3,
+.recent-donations-log-card h3,
+.fundraising-goal-card h3 {
+    color: #007bff; /* HopeBridge blue */
+    margin-top: 0;
+    font-size: 1.2em;
+}
+
+/* 3. Personal Summary Specifics */
+.personal-summary-card .personal-amount {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: #28a745; /* Green for success/money */
+    margin: 10px 0 15px 0;
+}
+
+/* 4. Recent Donations Log Specifics */
+.recent-donations-log-card .donation-list {
+    list-style: none;
+    padding: 0;
+}
+
+.recent-donations-log-card .donation-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95em;
+}
+
+/* 5. Fundraising Goal Progress Specifics */
+.fundraising-goal-card p {
+    margin-bottom: 10px;
+}
+
+.progress-bar-container {
+    height: 15px;
+    background-color: #e9ecef; /* Light gray background */
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #ffc107; /* Yellow/Amber color for progress */
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-percentage {
+    text-align: right;
+    font-weight: bold;
+    color: #6c757d;
+}
+    /* Custom icon backgrounds */
+    .bg-light-success { background-color: #d1e7dd; }
+    .bg-light-primary { background-color: #cfe2ff; }
+    .bg-light-warning { background-color: #fff3cd; }
+    
+    .card {
+        transition: transform 0.2s;
+    }
+    
+    /* Hover effect for stats cards */
+    .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+
+{% endblock %}

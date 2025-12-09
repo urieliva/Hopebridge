@@ -1,33 +1,91 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'needy/style.css' %}">
+<div class="row justify-content-center py-5">
+    <div class="col-md-8 col-lg-6">
+        
+        <div class="d-flex align-items-center mb-4">
+            <a href="{% url 'needy_profile' %}" class="btn btn-outline-secondary rounded-circle me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <div>
+                <h2 class="fw-bold text-dark mb-0">Edit Request</h2>
+                <p class="text-muted small mb-0">Update details for "{{ case.title }}"</p>
+            </div>
+        </div>
 
-<div class="needy-container">
-    <div class="needy-card">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            
+            <div class="card-body p-4 p-md-5">
+                
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
 
-        <h2 class="needy-title">Edit Case</h2>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="title" value="{{ case.title }}" class="form-control" id="id_title" placeholder="Title" required>
+                        <label for="id_title"><i class="fa-solid fa-pen me-2 text-muted"></i>Case Title</label>
+                    </div>
 
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+                    <div class="form-floating mb-4">
+                        <textarea name="story" class="form-control" id="id_story" style="height: 150px" placeholder="Story" required>{{ case.story }}</textarea>
+                        <label for="id_story"><i class="fa-solid fa-align-left me-2 text-muted"></i>Your Story</label>
+                    </div>
 
-            <label>Case Title</label>
-            <input type="text" name="title" value="{{ case.title }}" class="form-control mb-2" required>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-secondary">Target Amount</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light border-end-0">KES</span>
+                            <input type="number" name="amount_needed" value="{{ case.amount_needed }}" class="form-control border-start-0 ps-0 fw-bold" required>
+                        </div>
+                    </div>
 
-            <label>Your Story</label>
-            <textarea name="story" class="form-control mb-2" rows="4" required>{{ case.story }}</textarea>
+                    <div class="mb-4 bg-light p-3 rounded-3 border">
+                        <label class="form-label fw-bold small text-secondary mb-2">
+                            <i class="fa-solid fa-paperclip me-1"></i> Supporting Document
+                        </label>
+                        
+                        {% if case.document %}
+                        <div class="d-flex align-items-center mb-2 text-success small">
+                            <i class="fa-solid fa-circle-check me-2"></i>
+                            <span>Current file uploaded. Upload new one only to replace it.</span>
+                        </div>
+                        {% endif %}
 
-            <label>Change Document (Optional)</label>
-            <input type="file" name="document" class="form-control mb-2">
+                        <input type="file" name="document" class="form-control">
+                        <div class="form-text x-small">Leave empty to keep the current document.</div>
+                    </div>
 
-            <label>Amount Needed (KES)</label>
-            <input type="number" name="amount_needed" value="{{ case.amount_needed }}" class="form-control mb-3" required>
+                    <hr class="my-4 opacity-25">
 
-            <button class="needy-btn">Update Case</button>
-        </form>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning text-white btn-lg rounded-pill fw-bold shadow-sm hover-elevate">
+                            Save Changes
+                        </button>
+                        <a href="{% url 'needy_profile' %}" class="btn btn-light rounded-pill text-muted fw-bold">
+                            Cancel
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
 
     </div>
 </div>
+
+<style>
+    .hover-elevate {
+        transition: transform 0.2s ease;
+    }
+    .hover-elevate:hover {
+        transform: translateY(-2px);
+    }
+    /* Ensure the warning button text stays white */
+    .btn-warning {
+        color: #fff !important;
+    }
+</style>
 
 {% endblock %}

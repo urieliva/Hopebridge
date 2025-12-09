@@ -1,21 +1,136 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>My Requests</title>
-    <link rel="stylesheet" href="{% static 'needy/css/style.css' %}">
-</head>
-<body>
-<h1>My Donation Requests</h1>
-<ul>
-    {% for request in requests %}
-    <li>{{ request.title }} - {{ request.description }}</li>
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h2 class="fw-bold text-dark mb-0">My Requests</h2>
+            <p class="text-muted small mb-0">Manage and track your donation cases.</p>
+        </div>
+        <a href="{% url 'request_donation' %}" class="btn btn-warning text-white rounded-pill fw-bold shadow-sm hover-elevate">
+            <i class="fa-solid fa-plus me-2"></i>New Request
+        </a>
+    </div>
+
+    <div class="row g-4">
+        {% for request in requests %}
+        <div class="col-md-6 col-lg-4">
+            
+            <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden hover-card">
+                
+                <div class="position-absolute top-0 end-0 m-3">
+                    {% if request.is_verified %} <span class="badge bg-success rounded-pill shadow-sm">
+                            <i class="fa-solid fa-check me-1"></i> Verified
+                        </span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark rounded-pill shadow-sm">
+                            <i class="fa-solid fa-clock me-1"></i> Pending
+                        </span>
+                    {% endif %}
+                </div>
+
+                {% if request.image %}
+                <div class="ratio ratio-16x9">
+                    <img src="{{ request.image.url }}" class="card-img-top object-fit-cover" alt="Case Image">
+                </div>
+                {% else %}
+                <div class="ratio ratio-21x9 bg-light d-flex align-items-center justify-content-center text-muted">
+                    <i class="fa-regular fa-image fa-2x opacity-25"></i>
+                </div>
+                {% endif %}
+
+                <div class="card-body p-4 d-flex flex-column">
+                    
+                    <h5 class="fw-bold text-dark mb-2">{{ request.title }}</h5>
+                    <p class="text-muted small flex-grow-1">
+                        {{ request.description|truncatewords:20 }}
+                    </p>
+
+                    <div class="bg-light rounded-3 p-3 mb-3 mt-2">
+                        <div class="d-flex justify-content-between text-muted x-small fw-bold mb-1">
+                            <span>Raised</span>
+                            <span>Target</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <span class="text-success fw-bold">KES {{ request.amount_raised|default:"0" }}</span>
+                            <span class="text-dark fw-bold small">KES {{ request.amount_needed }}</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar bg-warning" role="progressbar" 
+                                 aria-valuenow="{{ request.amount_raised|default:"0" }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="{{ request.amount_needed }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'update_needy' request.id %}" class="btn btn-outline-primary btn-sm flex-fill rounded-pill fw-bold">
+                            <i class="fa-regular fa-pen-to-square me-1"></i> Edit
+                        </a>
+                        <a href="{% url 'delete_needy' request.id %}" class="btn btn-outline-danger btn-sm flex-fill rounded-pill fw-bold">
+                            <i class="fa-regular fa-trash-can me-1"></i> Delete
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% empty %}
+        
+        <div class="col-12 text-center py-5">
+            <div class="mb-4 text-muted opacity-25">
+                <i class="fa-solid fa-folder-open fa-5x"></i>
+            </div>
+            <h4 class="fw-bold text-dark">No requests found</h4>
+            <p class="text-muted mb-4">You haven't submitted any donation requests yet.</p>
+            <a href="{% url 'request_donation' %}" class="btn btn-warning text-white rounded-pill px-4 fw-bold">
+                Create Your First Request
+            </a>
+        </div>
+
+        {% endfor %}
+    </div>
+
+    <div class="mt-5">
+        <a href="{% url 'needy_home' %}" class="text-decoration-none text-muted small hover-dark">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+<style>
+    /* Hover effect for the card */
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+    }
+
+    /* Helper for very small text */
+    .x-small {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .hover-elevate {
+        transition: transform 0.2s;
+    }
+    .hover-elevate:hover {
+        transform: translateY(-2px);
+    }
     
-    {% empty %}
-    <li>No requests submitted yet.</li>
-    {% endfor %}
-</ul>
-<a href="{% url 'needy_home' %}">Back to Dashboard</a>
-</body>
-</html>
+    /* Ensure warning buttons have white text */
+    .btn-warning {
+        color: #fff !important;
+    }
+</style>
+
+{% endblock %}

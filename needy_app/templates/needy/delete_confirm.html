@@ -1,24 +1,79 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'needy/style.css' %}">
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-6 col-lg-4">
+        
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            
+            <div class="bg-danger py-2"></div>
 
-<div class="needy-container">
-    <div class="needy-card text-center">
+            <div class="card-body text-center p-5">
+                
+                <div class="mb-4">
+                    <div class="icon-circle bg-danger bg-opacity-10 text-danger mx-auto">
+                        <i class="fa-regular fa-trash-can fa-3x shake-animation"></i>
+                    </div>
+                </div>
 
-        <h3 class="mb-3">Delete Case</h3>
-        <p>Are you sure you want to delete:</p>
+                <h3 class="fw-bold text-dark mb-2">Are you sure?</h3>
+                <p class="text-muted mb-4">
+                    You are about to permanently delete the case:
+                    <br>
+                    <span class="fw-bold text-dark">"{{ case.title }}"</span>
+                </p>
 
-        <h5 class="mb-4 text-warning">"{{ case.title }}"</h5>
+                <div class="alert alert-warning border-0 d-flex align-items-center justify-content-center small mb-4">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                    This action cannot be undone.
+                </div>
 
-        <form method="POST">
-            {% csrf_token %}
-            <button class="btn btn-danger">Yes, Delete</button>
-            <a href="{% url 'needy_profile' %}" class="btn btn-secondary ms-2">Cancel</a>
-        </form>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg rounded-pill fw-bold shadow-sm">
+                            Yes, Delete Case
+                        </button>
+                        
+                        <a href="{% url 'needy_profile' %}" class="btn btn-light btn-lg rounded-pill fw-bold text-secondary mt-2">
+                            No, Keep It
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
 
     </div>
 </div>
+
+<style>
+    /* Circle background for the trash icon */
+    .icon-circle {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Shake Animation to indicate danger/caution */
+    .shake-animation {
+        animation: shake 2s infinite;
+    }
+
+    @keyframes shake {
+        0% { transform: rotate(0deg); }
+        10% { transform: rotate(-10deg); }
+        20% { transform: rotate(10deg); }
+        30% { transform: rotate(-10deg); }
+        40% { transform: rotate(10deg); }
+        50% { transform: rotate(0deg); }
+        100% { transform: rotate(0deg); }
+    }
+</style>
 
 {% endblock %}

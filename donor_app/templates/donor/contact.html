@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2>Contact Us</h2>
+    <p>If you have any questions, need support, or want to get involved with HopeBridge, feel free to reach out using any of the contacts below.</p>
+
+    <h4>Email</h4>
+    <p>hopebridge.support@example.com</p>
+
+    <h4>Phone</h4>
+    <p>+254 712 345 678</p>
+
+    <h4>Office Hours</h4>
+    <p>Monday - Friday, 9:00 AM - 5:00 PM</p>
+
+    <h4>Send Us a Message</h4>
+    <form>
+        <div class="form-group mb-3">
+            <label>Your Name</label>
+            <input type="text" class="form-control" placeholder="Enter your name">
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Your Email</label>
+            <input type="email" class="form-control" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Your Message</label>
+            <textarea class="form-control" rows="4" placeholder="Write your message here"></textarea>
+        </div>
+
+        <button class="btn btn-primary">Send Message</button>
+    </form>
+
+</div>
+{% endblock %}

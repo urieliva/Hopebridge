@@ -1,44 +1,116 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'donor/style.css' %}">
+<div class="bg-primary bg-opacity-10 rounded-4 p-5 mb-5 text-center position-relative overflow-hidden">
+    <div class="position-relative z-1">
+        <h1 class="fw-bold text-primary mb-3">Make a Difference Today</h1>
+        <p class="text-muted lead mb-4" style="max-width: 600px; margin: 0 auto;">
+            Browse verified cases below and help bridge the gap for those in need. Every shilling counts.
+        </p>
+    </div>
+    <i class="fa-solid fa-hand-holding-heart position-absolute text-primary opacity-25" 
+       style="font-size: 15rem; right: -50px; bottom: -50px; transform: rotate(-15deg);"></i>
+</div>
 
-<div class="donor-container">
+<div class="row g-4 mb-5">
+    {% for case in cases %}
+    <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
+        
+        <div class="card border-0 shadow-sm rounded-4 w-100 hover-lift overflow-hidden">
+            
+            <div class="card-header bg-white border-0 pt-4 px-4 pb-0 d-flex justify-content-between align-items-start">
+                <div class="icon-box bg-light-primary text-primary rounded-circle">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">
+                    Verified
+                </span>
+            </div>
 
-    <h2 class="donor-title">Verified Help Cases</h2>
+            <div class="card-body px-4 pt-3 pb-4 d-flex flex-column">
+                
+                <h5 class="card-title fw-bold text-dark mb-2">{{ case.title }}</h5>
+                <p class="card-text text-muted small flex-grow-1">
+                    {{ case.story|slice:":100" }}...
+                </p>
 
-    <div class="row">
-        {% for case in cases %}
-        <div class="col-md-4 mb-4">
+                <div class="mt-3">
+                    <div class="d-flex justify-content-between text-muted x-small fw-bold mb-1">
+                        <span>Raised</span>
+                        <span>Goal</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-end mb-2">
+                        <span class="text-success fw-bold fs-5">KES {{ case.amount_raised }}</span>
+                        <span class="text-dark fw-bold small">KES {{ case.amount_needed }}</span>
+                    </div>
 
-            <div class="donor-card">
-
-                <h5>{{ case.title }}</h5>
-                <p class="small opacity-75">{{ case.story|slice:":100" }}...</p>
-
-                <p><strong>Target:</strong> KES {{ case.amount_needed }}</p>
-                <p><strong>Raised:</strong> KES {{ case.amount_raised }}</p>
-
-                <!-- Progress Bar -->
-                <div class="progress mb-3">
-                    <div class="progress-bar">
-                        KES {{ case.amount_raised }}
+                    <div class="progress" style="height: 8px; border-radius: 10px;">
+                        <div class="progress-bar bg-primary rounded-pill" 
+                             role="progressbar" 
+                             aria-valuenow="{{ case.amount_raised }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="{{ case.amount_needed }}">
+                        </div>
+                    </div>
+                    <div class="text-end mt-1">
+                        <small class="text-primary fw-bold" style="font-size: 0.75rem;">
+                            {% widthratio case.amount_raised case.amount_needed 100 %}% Funded
+                        </small>
                     </div>
                 </div>
+            </div>
 
-                <a href="{% url 'donate' case.id %}" class="btn btn-success donate-btn">
-                    Support This Case
+            <div class="card-footer bg-white border-0 px-4 pb-4 pt-0">
+                <a href="{% url 'donate' case.id %}" class="btn btn-outline-primary w-100 rounded-pill fw-bold">
+                    Support This Case <i class="fa-solid fa-arrow-right ms-2"></i>
                 </a>
-
             </div>
 
         </div>
-        {% empty %}
-        <p class="text-white text-center">No approved cases yet.</p>
-        {% endfor %}
     </div>
-
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <div class="mb-3 text-muted opacity-25">
+            <i class="fa-solid fa-folder-open fa-4x"></i>
+        </div>
+        <h4 class="text-muted fw-bold">No active cases</h4>
+        <p class="text-muted">There are currently no verified cases needing assistance.</p>
+    </div>
+    {% endfor %}
 </div>
+
+<style>
+    /* Makes the card float up slightly on hover */
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Styling for the little icon at top left of card */
+    .icon-box {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e7f1ff; /* Light blue */
+    }
+
+    /* Ensure text handles long words gracefully */
+    .card-text {
+        line-height: 1.6;
+    }
+    
+    .x-small {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+</style>
 
 {% endblock %}

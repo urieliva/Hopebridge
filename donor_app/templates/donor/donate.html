@@ -1,38 +1,99 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'donor/style.css' %}">
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-7 col-lg-5">
+        
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            
+            <div class="card-header bg-primary text-white text-center py-4">
+                <h4 class="mb-0 fw-bold"><i class="fa-solid fa-hand-holding-heart me-2"></i>Make a Donation</h4>
+            </div>
 
-<div class="donor-container">
+            <div class="card-body p-4 p-md-5">
+                
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold text-dark">{{ case.title }}</h3>
+                    <p class="text-muted small mt-2">{{ case.story }}</p>
+                </div>
 
-    <div class="donor-card donate-box">
+                <div class="row text-center mb-3">
+                    <div class="col-6 border-end">
+                        <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Goal</small>
+                        <div class="fs-5 fw-bold text-dark">KES {{ case.amount_needed }}</div>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Raised</small>
+                        <div class="fs-5 fw-bold text-success">KES {{ case.amount_raised }}</div>
+                    </div>
+                </div>
 
-        <h3 class="mb-3">{{ case.title }}</h3>
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="text-muted">Progress</span>
+                        <span class="fw-bold text-primary">{% widthratio case.amount_raised case.amount_needed 100 %}%</span>
+                    </div>
+                    <div class="progress" style="height: 12px; border-radius: 10px; background-color: #e9ecef;">
+                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
+                             role="progressbar" 
+                             aria-valuenow="{{ case.amount_raised }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="{{ case.amount_needed }}">
+                        </div>
+                    </div>
+                </div>
 
-        <p class="small opacity-75">{{ case.story }}</p>
+                <hr class="my-4 text-muted opacity-25">
 
-        <p><strong>Target:</strong> KES {{ case.amount_needed }}</p>
-        <p><strong>Raised:</strong> KES {{ case.amount_raised }}</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary">Enter Amount</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light border-end-0 text-muted">KES</span>
+                            <input type="number" name="amount" class="form-control border-start-0 ps-0 bg-light" placeholder="e.g. 500" required>
+                        </div>
+                    </div>
 
-        <div class="progress mb-3">
-            <div class="progress-bar">
-                KES {{ case.amount_raised }}
+                    <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill py-3 fw-bold shadow-sm hover-elevate">
+                        <i class="fa-solid fa-mobile-screen-button me-2"></i> Pay with M-Pesa
+                    </button>
+                </form>
+
+                <div class="alert alert-light border-0 d-flex align-items-center mt-3 mb-0 p-2">
+                    <i class="fa-solid fa-circle-info text-primary me-3 fs-4"></i>
+                    <div class="small text-muted lh-sm">
+                        Check your phone after clicking. You will receive an M-Pesa PIN prompt shortly.
+                    </div>
+                </div>
+
             </div>
         </div>
-
-        <form method="POST">
-            {% csrf_token %}
-
-            <label class="mb-1">Donation Amount (KES)</label>
-            <input type="number" name="amount" class="form-control mb-3" required>
-
-            <button class="btn btn-success donate-btn mb-2">Pay with Mpesa</button>
-        </form>
-        <p class="text-muted text-center small">You will receive an M-pesa prompt on your phone shortly.</p>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'donor-home' %}" class="text-decoration-none text-muted small hover-primary">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back to Cases
+            </a>
+        </div>
 
     </div>
-
 </div>
+
+<style>
+    /* Small hover effect for the button */
+    .hover-elevate {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-elevate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3) !important;
+    }
+    .hover-primary:hover {
+        color: #0d6efd !important;
+    }
+</style>
 
 {% endblock %}

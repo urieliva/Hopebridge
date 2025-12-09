@@ -1,21 +1,85 @@
 {% extends 'base.html' %}
-{% block content %}
-<h2 class="text-3xl font-bold text-yellow-600 mb-6 text-center">Submit Your Request</h2>
+{% load static %}
 
-<form method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-xl shadow-md max-w-lg mx-auto">
-  {% csrf_token %}
-  <div class="mb-4">
-    <label for="title" class="block text-gray-700 font-medium mb-2">Title</label>
-    <input type="text" id="title" name="title" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-  </div>
-  <div class="mb-4">
-    <label for="description" class="block text-gray-700 font-medium mb-2">Description</label>
-    <textarea id="description" name="description" rows="4" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"></textarea>
-  </div>
-  <div class="mb-4">
-    <label for="image" class="block text-gray-700 font-medium mb-2">Upload Image</label>
-    <input type="file" id="image" name="image" class="w-full">
-  </div>
-  <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Submit</button>
-</form>
+{% block content %}
+
+<div class="row justify-content-center py-5">
+    <div class="col-md-8 col-lg-6">
+
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-dark">Submit Your Request</h2>
+            <p class="text-muted">Fill in the details below to reach potential donors.</p>
+        </div>
+
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            
+            <div class="card-header bg-warning bg-opacity-10 py-3 border-0 text-center">
+                <span class="fw-bold text-warning-emphasis">
+                    <i class="fa-solid fa-pen-to-square me-2"></i>New Application
+                </span>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-floating mb-3">
+                        <input type="text" id="title" name="title" class="form-control" placeholder="Title" required>
+                        <label for="title"><i class="fa-solid fa-heading me-2 text-muted"></i>Case Title</label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <textarea id="description" name="description" class="form-control" placeholder="Description" style="height: 150px;" required></textarea>
+                        <label for="description"><i class="fa-solid fa-align-left me-2 text-muted"></i>Description</label>
+                        <div class="form-text text-end small">Explain why you need help clearly.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="image" class="form-label fw-bold small text-secondary">
+                            <i class="fa-regular fa-image me-1"></i> Upload Evidence/Photo
+                        </label>
+                        <input type="file" id="image" name="image" class="form-control form-control-lg bg-light" required>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-warning btn-lg text-white rounded-pill fw-bold shadow-sm hover-elevate">
+                            Submit Request
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'needy-home' %}" class="text-decoration-none text-muted small hover-dark">
+                <i class="fa-solid fa-arrow-left me-1"></i> Cancel
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* Custom hover effect to make the button lift up */
+    .hover-elevate {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-elevate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
+    }
+    
+    /* Ensure the Warning Button text is readable (White) */
+    .btn-warning {
+        color: white !important;
+    }
+    
+    /* Hover effect for the back link */
+    .hover-dark:hover {
+        color: #212529 !important; /* Dark color on hover */
+    }
+</style>
+
 {% endblock %}

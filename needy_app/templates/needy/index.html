@@ -1,63 +1,142 @@
+{% extends 'needy/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Needy Dashboard</title>
-    <link rel="stylesheet" href="{% static 'needy/css/style.css' %}">
-</head>
-<body>
-    <header>
-        <h1>Welcome to HopeBridge</h1>
-        <nav>
-            <h2><a href="{% url 'needy_home' %}">Home</a></h2>
-            <h2><a href="{% url 'logout_needy' %}">Logout</a></h2>
-        </nav>
-    </header>
 
-    <main>
-      <section class="cards-container">
-        <div class="card">
-            <h2>Request Donation</h2>
-            <p>Submit your donation request here.</p>
-            <a href="{% url 'request_donation' %}"><button>Request Now</button></a>
+{% block content %}
+<div class="container py-4">
+
+    <div class="row mb-5 align-items-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold text-dark">My Dashboard</h2>
+            <p class="text-muted">Manage your requests and track your donations.</p>
         </div>
-        <div class="card">
-            <h2>My requests</h2>
-            <p>View your submitted requests.</p>
-            <a href="{% url 'my_requests' %}"><button>View Requests</button></a>
+        <div class="col-md-4 text-md-end">
+            <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+                <i class="fa-solid fa-user-tag me-2"></i>Beneficiary Account
+            </span>
         </div>
-        <div class="card">
-            <h2>Profile</h2>
-            <p>Update your profile information.</p>
-            <a href="{% url 'needy_profile' %}"><button>Edit Profile</button></a>
+    </div>
+
+    <div class="row g-4 mb-5">
+        
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-square bg-success bg-opacity-10 text-success rounded-3 me-3">
+                            <i class="fa-solid fa-wallet fa-lg"></i>
+                        </div>
+                        <h6 class="text-uppercase text-muted fw-bold mb-0 small">Total Received</h6>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-0">KES 10,450</h3> 
+                </div>
+            </div>
         </div>
-      </section>
-        <section class="stats">
-            <div class="card">
-                <h2>Total Donations</h2>
-                <p>Ksh.10,450</p>
-            </div>
-            <div class="card">
-                <h2>Requests Pending</h2>
-                <p>5</p>
-            </div>
-            <div class="card">
-                <h2>Requests Fulfilled</h2>
-                <p>20</p>
-            </div>
-        </section>
 
-        <section class="actions">
-            <h2>What you can do:</h2>
-            <button>Request Help</button>
-            <button>View Donations</button>
-        </section>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-square bg-warning bg-opacity-10 text-warning rounded-3 me-3">
+                            <i class="fa-solid fa-hourglass-half fa-lg"></i>
+                        </div>
+                        <h6 class="text-uppercase text-muted fw-bold mb-0 small">Pending Review</h6>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-0">5 Requests</h3> 
+                </div>
+            </div>
+        </div>
 
-      </main>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-square bg-primary bg-opacity-10 text-primary rounded-3 me-3">
+                            <i class="fa-solid fa-clipboard-check fa-lg"></i>
+                        </div>
+                        <h6 class="text-uppercase text-muted fw-bold mb-0 small">Fully Funded</h6>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-0">20 Cases</h3> 
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <footer>
-        <p>&copy; 2025 HopeBridge. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+    <h5 class="fw-bold text-dark mb-3">Quick Actions</h5>
+    <div class="row g-4">
+        
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 hover-lift">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <i class="fa-solid fa-hand-holding-medical fa-3x text-warning"></i>
+                    </div>
+                    <h5 class="fw-bold">Request Help</h5>
+                    <p class="text-muted small">Submit a new case for donors to see.</p>
+                    <a href="{% url 'needy_app:create_case' %}" class="btn btn-warning text-white w-100 rounded-pill fw-bold stretched-link">
+                        Create Request
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 hover-lift">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <i class="fa-solid fa-list-check fa-3x text-secondary"></i>
+                    </div>
+                    <h5 class="fw-bold">My History</h5>
+                    <p class="text-muted small">Track status of submitted requests.</p>
+                    
+                    <a href="{% url 'needy_app:needy_profile' %}" class="btn btn-outline-secondary w-100 rounded-pill fw-bold stretched-link">
+                        View All
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 hover-lift">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <i class="fa-solid fa-user-gear fa-3x text-secondary"></i>
+                    </div>
+                    <h5 class="fw-bold">Profile</h5>
+                    <p class="text-muted small">Update your personal information.</p>
+                    
+                    <a href="{% url 'needy_app:needy_profile' %}" class="btn btn-outline-secondary w-100 rounded-pill fw-bold stretched-link">
+                        Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .icon-square {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .hover-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    .stretched-link::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        content: "";
+    }
+</style>
+{% endblock %}

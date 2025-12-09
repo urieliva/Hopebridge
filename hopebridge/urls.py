@@ -23,4 +23,7 @@ urlpatterns = [
     path('needy/', include('needy_app.urls')),
     path('donor/', include('donor_app.urls')),
     path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
+    path('browse cases/', views.browse_cases, name='browse cases'),
 ]

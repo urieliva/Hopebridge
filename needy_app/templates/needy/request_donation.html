@@ -1,19 +1,94 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Request Donation</title>
-    <link rel="stylesheet" href="{% static 'needy/css/style.css' %}">
-</head>
-<body>
-<h1>Request Donation</h1>
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="title" placeholder="Title" required>
-    <textarea name="description" placeholder="Description" required></textarea>
-    <button type="submit">Submit Request</button>
-</form>
-<a href="{% url 'needy_home' %}">Back to Dashboard</a>
-</body>
-</html>
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-8 col-lg-6">
+        
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-dark">Make a Request</h2>
+            <p class="text-muted">Describe your situation clearly to attract donors.</p>
+        </div>
+
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            
+            <div class="card-header bg-warning bg-opacity-10 py-3 border-0">
+                <div class="d-flex align-items-center justify-content-center text-warning fw-bold">
+                    <i class="fa-solid fa-hand-holding-heart me-2"></i> New Case Details
+                </div>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-floating mb-3">
+                        <input type="text" name="title" class="form-control" id="id_title" placeholder="e.g. Medical Bill Assistance" required>
+                        <label for="id_title"><i class="fa-solid fa-heading me-2 text-warning"></i>Case Title</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Amount Needed</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light border-end-0">KES</span>
+                            <input type="number" name="amount" class="form-control border-start-0 ps-0" placeholder="e.g. 5000" required>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <textarea name="description" class="form-control" id="id_desc" style="height: 150px" placeholder="Description" required></textarea>
+                        <label for="id_desc"><i class="fa-solid fa-align-left me-2 text-warning"></i>Your Story</label>
+                        <div class="form-text text-end small">Be honest and detailed.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-secondary">
+                            <i class="fa-solid fa-image me-1"></i> Supporting Image (Optional)
+                        </label>
+                        <input type="file" name="image" class="form-control form-control-lg bg-light">
+                    </div>
+
+                    <hr class="my-4 opacity-25">
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-warning btn-lg text-white rounded-pill fw-bold shadow-sm hover-elevate">
+                            Submit Request <i class="fa-solid fa-paper-plane ms-2"></i>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'needy_home' %}" class="text-decoration-none text-muted small hover-dark">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* Button Hover Effect */
+    .hover-elevate {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-elevate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    }
+    
+    /* Force white text on yellow button */
+    .btn-warning {
+        color: #fff !important;
+    }
+    
+    /* Link Hover */
+    .hover-dark:hover {
+        color: #212529 !important;
+    }
+</style>
+
+{% endblock %}

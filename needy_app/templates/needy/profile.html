@@ -1,19 +1,106 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
-    <link rel="stylesheet" href="{% static 'needy/css/style.css' %}">
-</head>
-<body>
-<h1>Edit Profile</h1>
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="username" value="{{ request.user.username }}" required>
-    <input type="email" name="email" value="{{ request.user.email }}" required>
-    <button type="submit">Update Profile</button>
-</form>
-<a href="{% url 'needy_home' %}">Back to Dashboard</a>
-</body>
-</html>
+{% extends 'needy/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="mb-0"><i class="fa-solid fa-user me-2"></i>My Profile</h5>
+                </div>
+                <div class="card-body">
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} small py-2">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'needy_app:needy_profile' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Username</label>
+                            <input type="text" class="form-control bg-light" value="{{ request.user.username }}" readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Email Address</label>
+                            <input type="email" name="email" class="form-control" value="{{ request.user.email }}" required>
+                        </div>
+
+                        <div class="alert alert-success py-2 small mb-4">
+                            <i class="fa-solid fa-check-circle me-1"></i> Account Verified
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning text-white fw-bold">
+                                <i class="fa-solid fa-floppy-disk me-1"></i> Save Changes
+                            </button>
+
+                            <a href="{% url 'needy_app:home' %}" class="btn btn-outline-secondary">
+                                <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+                    </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-dark">My Request History</h5>
+                    <a href="{% url 'needy_app:create_case' %}" class="btn btn-sm btn-warning text-white fw-bold">
+                        <i class="fa-solid fa-plus me-1"></i>New Request
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    {% if cases %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Title</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for case in cases %}
+                                <tr>
+                                    <td class="ps-4 fw-bold">{{ case.title }}</td>
+                                    <td class="text-muted small">{{ case.date_created|date:"M d, Y" }}</td>
+                                    <td>KES {{ case.amount_needed }}</td>
+                                    <td>
+                                        {% if case.is_approved %}
+                                            <span class="badge bg-success rounded-pill">Approved</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary rounded-pill">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'needy_app:delete_case' case.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this case?');">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fa-solid fa-folder-open fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">You haven't made any requests yet.</p>
+                        <a href="{% url 'needy_app:create_case' %}" class="btn btn-warning text-white">Create First Request</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,53 +1,47 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'needy/base.html' %}
 
 {% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-white">
+                    <h4 class="mb-0"><i class="fa-solid fa-hand-holding-heart me-2"></i>Create New Request</h4>
+                </div>
+                <div class="card-body p-4">
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
 
-<link rel="stylesheet" href="{% static 'needy/style.css' %}">
+                    <form method="POST" action="{% url 'needy_app:create_case' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="title" class="form-label fw-bold">Title of Request</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="e.g. Help for School Fees" required>
+                        </div>
 
-<div class="needy-container">
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-bold">Detailed Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="5" placeholder="Explain your situation in detail..." required></textarea>
+                        </div>
 
-    <div class="needy-card">
+                        <div class="mb-3">
+                            <label for="amount_needed" class="form-label fw-bold">Amount Needed (KES)</label>
+                            <input type="number" class="form-control" id="amount_needed" name="amount_needed" placeholder="e.g. 5000" required>
+                        </div>
 
-        <h2 class="needy-title">Request Help on HopeBridge</h2>
-        <p class="needy-subtitle">
-            Your story matters. Verified requests are safely shared with donors.
-        </p>
-
-        <!-- Steps -->
-        <div class="steps">
-            <div class="step active">1. Fill Details</div>
-            <div class="step">2. Admin Review</div>
-            <div class="step">3. Donors Support</div>
-        </div>
-
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            <label>Case Title</label>
-            <input type="text" name="title" class="form-control mb-2" placeholder="e.g. Hospital Support" required>
-
-            <label>Your Story</label>
-            <textarea name="story" class="form-control mb-2" rows="4"
-                placeholder="Explain your situation clearly..." required></textarea>
-
-            <label>Upload Supporting Document</label>
-            <div class="file-box mb-2">
-                <input type="file" name="document" class="form-control" required>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning text-white fw-bold">Submit Request</button>
+                            <a href="{% url 'needy_app:home' %}" class="btn btn-light text-muted">Cancel</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <label>Amount Needed (KES)</label>
-            <input type="number" name="amount_needed" class="form-control mb-3"
-                placeholder="e.g. 20,000" required>
-
-            <button class="needy-btn">Submit for Approval</button>
-        </form>
-
-        <p class="needy-note">
-            Your request will appear to donors only after admin verification.
-        </p>
-
+        </div>
     </div>
 </div>
-
 {% endblock %}

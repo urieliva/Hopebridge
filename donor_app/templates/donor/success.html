@@ -1,22 +1,85 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 
-<link rel="stylesheet" href="{% static 'donor/style.css' %}">
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-6 col-lg-5">
 
-<div class="donor-container">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            
+            <div class="bg-success py-2"></div>
 
-    <div class="donor-card text-center">
+            <div class="card-body text-center p-5">
+                
+                <div class="mb-4">
+                    <div class="success-icon-wrapper">
+                        <i class="fa-solid fa-check fa-3x text-white"></i>
+                    </div>
+                </div>
 
-        <h3 class="text-success mb-3">✅ Donation Successful</h3>
+                <h2 class="fw-bold text-dark mb-2">Thank You!</h2>
+                <p class="text-muted mb-4">Your donation has been successfully received.</p>
 
-        <p>Thank you for supporting:</p>
-        <h5 class="mb-3">{{ case.title }}</h5>
+                <div class="bg-light rounded-3 p-4 mb-4 border border-light">
+                    <p class="small text-uppercase text-muted fw-bold mb-1">You supported</p>
+                    <h5 class="fw-bold text-primary mb-0">{{ case.title }}</h5>
+                </div>
 
-        <a href="/cases/" class="btn btn-light">Back to Cases</a>
+                <div class="d-grid gap-3">
+                    <a href="{% url 'needy-home' %}" class="btn btn-primary btn-lg rounded-pill fw-bold hover-scale">
+                        Browse More Cases
+                    </a>
+                    <a href="{% url 'donor_profile' %}" class="btn btn-outline-secondary btn-lg rounded-pill fw-bold">
+                        View Receipt / History
+                    </a>
+                </div>
+
+            </div>
+        </div>
 
     </div>
-
 </div>
+
+<style>
+    /* 1. The Green Circle */
+    .success-icon-wrapper {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 20px rgba(25, 135, 84, 0.3);
+        
+        /* Apply the animation defined below */
+        animation: pulse-green 2s infinite;
+    }
+
+    /* 2. The Animation Keyframes */
+    @keyframes pulse-green {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.7);
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 20px rgba(25, 135, 84, 0);
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+        }
+    }
+
+    /* 3. Button Hover Effect */
+    .hover-scale {
+        transition: transform 0.2s ease;
+    }
+    .hover-scale:hover {
+        transform: scale(1.02);
+    }
+</style>
 
 {% endblock %}

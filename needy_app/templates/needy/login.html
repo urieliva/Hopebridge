@@ -1,35 +1,101 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Needy Login</title>
-    <link rel="stylesheet" href="{% static 'needy/css/style.css' %}">
-</head>
-<body>
 
-<div class="auth-box">
-    <h2>Needy Login</h2>
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-8 col-lg-5 col-xl-4">
+        
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-dark">Welcome Back</h2>
+            <p class="text-muted">Sign in to manage your aid requests.</p>
+        </div>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="error">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            
+            <div class="card-header bg-warning bg-opacity-25 py-2 border-0"></div>
 
-    <form method="POST">
-        {% csrf_token %}
+            <div class="card-body p-4 p-md-5">
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+                            {% if message.tags == 'error' %}
+                                <i class="fa-solid fa-circle-exclamation me-2"></i>
+                            {% else %}
+                                <i class="fa-solid fa-circle-check me-2"></i>
+                            {% endif %}
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
+                <form method="POST">
+                    {% csrf_token %}
 
-        <button type="submit">Login</button>
-    </form>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="id_username" name="username" placeholder="Username" required>
+                        <label for="id_username"><i class="fa-solid fa-user me-2 text-warning"></i>Username</label>
+                    </div>
 
-    <p>
-        No account?
-        <a href="{% url 'register_needy' %}">Create one</a>
-    </p>
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" id="id_password" name="password" placeholder="Password" required>
+                        <label for="id_password"><i class="fa-solid fa-lock me-2 text-warning"></i>Password</label>
+                    </div>
+
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-warning btn-lg rounded-pill fw-bold text-white shadow-sm hover-elevate">
+                            Login
+                        </button>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="small text-muted mb-0">
+                            Don't have an account? 
+                            <a href="{% url 'register_needy' %}" class="text-warning fw-bold text-decoration-none hover-dark">
+                                Create one here
+                            </a>
+                        </p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <p class="small text-muted">
+                <i class="fa-solid fa-shield-halved me-1"></i> Secure Beneficiary Portal
+            </p>
+        </div>
+
+    </div>
 </div>
 
-</body>
-</html>
+<style>
+    /* Button Animation */
+    .hover-elevate {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-elevate:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    }
+
+    /* Force white text on the yellow button for contrast */
+    .btn-warning {
+        color: white !important;
+    }
+    
+    /* Hover effect for the link */
+    .hover-dark:hover {
+        color: #d63384 !important; /* Slightly darker pink/orange or keep warning */
+        text-decoration: underline !important;
+    }
+
+    /* Fix for Bootstrap Floating Label Icons */
+    .form-floating > label {
+        padding-left: 1.5rem;
+    }
+</style>
+
+{% endblock %}
