@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'donor/style.css' %}">
+
+<div class="donor-container">
+
+    <h2 class="donor-title">Verified Help Cases</h2>
+
+    <div class="row">
+        {% for case in cases %}
+        <div class="col-md-4 mb-4">
+
+            <div class="donor-card">
+
+                <h5>{{ case.title }}</h5>
+                <p class="small opacity-75">{{ case.story|slice:":100" }}...</p>
+
+                <p><strong>Target:</strong> KES {{ case.amount_needed }}</p>
+                <p><strong>Raised:</strong> KES {{ case.amount_raised }}</p>
+
+                <!-- Progress Bar -->
+                <div class="progress mb-3">
+                    <div class="progress-bar">
+                        KES {{ case.amount_raised }}
+                    </div>
+                </div>
+
+                <a href="{% url 'donate' case.id %}" class="btn btn-success donate-btn">
+                    Support This Case
+                </a>
+
+            </div>
+
+        </div>
+        {% empty %}
+        <p class="text-white text-center">No approved cases yet.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

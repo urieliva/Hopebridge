@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'needy/style.css' %}">
+
+<div class="needy-container">
+
+    <div class="needy-card">
+
+        <h2 class="needy-title">Request Help on HopeBridge</h2>
+        <p class="needy-subtitle">
+            Your story matters. Verified requests are safely shared with donors.
+        </p>
+
+        <!-- Steps -->
+        <div class="steps">
+            <div class="step active">1. Fill Details</div>
+            <div class="step">2. Admin Review</div>
+            <div class="step">3. Donors Support</div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Case Title</label>
+            <input type="text" name="title" class="form-control mb-2" placeholder="e.g. Hospital Support" required>
+
+            <label>Your Story</label>
+            <textarea name="story" class="form-control mb-2" rows="4"
+                placeholder="Explain your situation clearly..." required></textarea>
+
+            <label>Upload Supporting Document</label>
+            <div class="file-box mb-2">
+                <input type="file" name="document" class="form-control" required>
+            </div>
+
+            <label>Amount Needed (KES)</label>
+            <input type="number" name="amount_needed" class="form-control mb-3"
+                placeholder="e.g. 20,000" required>
+
+            <button class="needy-btn">Submit for Approval</button>
+        </form>
+
+        <p class="needy-note">
+            Your request will appear to donors only after admin verification.
+        </p>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Poppins, Arial, sans-serif;
+    background: url('../images/mpesa-bg.jpg') no-repeat center/cover;
+    height: 100vh;
+    backdrop-filter: blur(4px);
+}
+
+.payment-container {
+    width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: slideIn 0.8s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.mpesa-logo {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: green;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 26px;
+    margin: 10px 0;
+}
+
+.description {
+    text-align: center;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: green;
+    box-shadow: 0 0 8px rgba(0, 128, 0, 0.3);
+}
+
+.pay-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    border: none;
+    background: green;
+    color: white;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.pay-btn:hover {
+    background: #0a8a0a;
+    transform: scale(1.03);
+}

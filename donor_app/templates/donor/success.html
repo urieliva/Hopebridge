@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'donor/style.css' %}">
+
+<div class="donor-container">
+
+    <div class="donor-card text-center">
+
+        <h3 class="text-success mb-3">✅ Donation Successful</h3>
+
+        <p>Thank you for supporting:</p>
+        <h5 class="mb-3">{{ case.title }}</h5>
+
+        <a href="/cases/" class="btn btn-light">Back to Cases</a>
+
+    </div>
+
+</div>
+
+{% endblock %}

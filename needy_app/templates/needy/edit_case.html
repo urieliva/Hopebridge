@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'needy/style.css' %}">
+
+<div class="needy-container">
+    <div class="needy-card">
+
+        <h2 class="needy-title">Edit Case</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Case Title</label>
+            <input type="text" name="title" value="{{ case.title }}" class="form-control mb-2" required>
+
+            <label>Your Story</label>
+            <textarea name="story" class="form-control mb-2" rows="4" required>{{ case.story }}</textarea>
+
+            <label>Change Document (Optional)</label>
+            <input type="file" name="document" class="form-control mb-2">
+
+            <label>Amount Needed (KES)</label>
+            <input type="number" name="amount_needed" value="{{ case.amount_needed }}" class="form-control mb-3" required>
+
+            <button class="needy-btn">Update Case</button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

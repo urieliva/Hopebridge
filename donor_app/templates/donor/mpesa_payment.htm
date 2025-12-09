@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lipa na M-Pesa</title>
+    <link rel="stylesheet" href="{% static 'donor/payment.css' %}">
+</head>
+<body>
+
+<div class="payment-container">
+    <div class="mpesa-logo">M-PESA PAYMENT</div>
+
+    <h2>Donate With M-Pesa</h2>
+    <p class="description">Enter your phone number and donation amount.  
+        You will receive an M-Pesa prompt on your phone.</p>
+
+    <form method="POST" onsubmit="showPopup()">
+        {% csrf_token %}
+        
+        <div class="input-group">
+            <label>Phone Number (Safaricom)</label>
+            <input type="text" name="phone" placeholder="e.g. 07XXXXXXXX" required>
+        </div>
+
+        <div class="input-group">
+            <label>Amount (KES)</label>
+            <input type="number" name="amount" placeholder="e.g. 500" min="1" required>
+        </div>
+
+        <button type="submit" class="pay-btn">Pay Now</button>
+    </form>
+</div>
+
+<!-- POPUP MESSAGE -->
+<div id="popup" class="popup">
+    <div class="popup-box">
+        <h3>✔ Prompt Sent!</h3>
+        <p>Please check your phone and enter M-Pesa PIN.</p>
+    </div>
+</div>
+
+<script>
+function showPopup() {
+    document.getElementById("popup").style.display = "flex";
+
+    // OPTIONAL: auto hide after 3 seconds
+    setTimeout(() => {
+        document.getElementById("popup").style.display = "none";
+    }, 3000);
+}
+</script>
+
+</body>
+</html>

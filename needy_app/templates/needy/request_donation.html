@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Request Donation</title>
+    <link rel="stylesheet" href="{% static 'needy/css/style.css' %}">
+</head>
+<body>
+<h1>Request Donation</h1>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="Title" required>
+    <textarea name="description" placeholder="Description" required></textarea>
+    <button type="submit">Submit Request</button>
+</form>
+<a href="{% url 'needy_home' %}">Back to Dashboard</a>
+</body>
+</html>

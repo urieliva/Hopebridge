@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title class="page-title">HopeBridge</title>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">HopeBridge</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/needy/login/">Needy Login</a></li>
+            <li><a href="/donor/login/">Donor Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <img src="{% static 'images/hopebridge.jpeg' %}" alt="Home Image" class="hero-image">
+    <h1 class="hero-title">Connecting Hearts, Changing Lives</h1>
+    <p class="hero-subtitle">
+        HopeBridge empowers those in need by connecting them with kind donors.
+    </p>
+
+    <div class="hero-buttons">
+        <a href="/needy/login/" class="btn needy-btn">I'm Needy</a>
+        <a href="/donor/login/" class="btn donor-btn">I'm a Donor</a>
+    </div>
+</section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about">
+        <h2>About HopeBridge</h2>
+        <p>
+            HopeBridge is a platform designed to support struggling individuals and families
+            by linking them with kind donors. Together we can make a real difference.
+        </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 HopeBridge. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
